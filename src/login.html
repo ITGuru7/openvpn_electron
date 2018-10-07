@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Gatwave</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="./assets/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/csshake/1.5.3/csshake.min.css">
+        
+    </head>
+    <body fullbleed class="auth" style="padding-top: 0px; height: 100%">
+            
+            <div id="downloading" style="display: none"><img draggable="false" class="icon" src="./assets/img/loading.svg" /></div>
+            <div id="message"></div>
+            <div id="shake" class="shake-constant">
+                <div id="login" class="form">
+                    <div id="logo">&nbsp;</div>
+                    <form class="login-form">
+                        
+                        <div class="webflow-style-input">
+                                <input type="text" placeholder="Username" id="username" required>
+                        </div>
+                        <div class="webflow-style-input">
+                            <input type="password" placeholder="Password" id="password" required>
+                        </div>
+                        <button id="handleLogin">Login</button>
+                    </form>
+                </div>
+            </div>
+    </body>
+    <footer>
+            <script>
+                var $ = document.querySelector.bind(document);
+                var EventEmitter = require('events').EventEmitter;
+                var emitLogin = new EventEmitter();
+                document.getElementById("handleLogin").addEventListener('click', function(e){
+                    e.preventDefault();
+                    if(document.getElementById("username").value === "" ||  document.getElementById("password").value === "") {
+                        alert("Please enter username and password!")
+                        return;
+                    }
+                   
+                    new Login(document.getElementById("username").value, document.getElementById("password").value);
+                });
+            </script>
+            <script src="./components/Login.js"></script>
+    </footer>
+</html>

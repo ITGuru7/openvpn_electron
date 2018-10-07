@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>Gatwave</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="./assets/css/style.css">
+  </head>
+  <body fullbleed class="loading">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+    <div id="bar">
+        <div id="back"><img draggable="false" class="icon" src="./assets/img/arrow-left.svg" /></div>
+        <div id="forward"><img draggable="false" class="icon" src="./assets/img/arrow-right.svg" /></div>
+        <div id="refresh"><img draggable="false" class="icon" src="./assets/img/sync-alt.svg" /></div>
+        <div id="stop"><img draggable="false" class="icon" src="./assets/img/stop-circle.svg" /></div>
+    </div>
+    <div id="notice"></div>
+    
+    <webview id="webview" src="" allowpopups useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36"></webview>
+   
+  </body>
+  <footer>
+        <script>
+            var $ = document.querySelector.bind(document);
+            var EventEmitter = require('events').EventEmitter;
+            document.addEventListener('DOMContentLoaded', function(){
+                new Content;
+            });
+            var emmitLoad = new EventEmitter();
+
+        </script>
+        <script src="./assets/js/connect.js"></script>
+        <script src="./components/Bar.js"></script>
+        <script src="./components/Content.js"></script>
+  </footer>
+</html>

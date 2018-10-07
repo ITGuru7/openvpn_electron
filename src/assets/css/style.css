@@ -1,0 +1,373 @@
+html {
+    height: 100%;
+}
+body {
+    margin: 0;
+    overflow: hidden;
+    padding-top: 30px;
+}
+
+/* Loader */
+body.loading #loader-wrapper {
+    display: block;
+}
+#loader-wrapper {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+}
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color:grey;
+
+    -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+    animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+
+    z-index: 1001;
+}
+
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: grey;
+
+    -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+    animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: grey;
+
+    -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+
+@-webkit-keyframes spin {
+    0%   { 
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+@keyframes spin {
+    0%   { 
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+
+#loader-wrapper .loader-section {
+    position: fixed;
+    top: 30px;
+    width: 51%;
+    height: 100%;
+    background: #222222;
+    z-index: 1000;
+    -webkit-transform: translateX(0);  /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transform: translateX(0);  /* IE 9 */
+    transform: translateX(0);  /* Firefox 16+, IE 10+, Opera */
+}
+
+#loader-wrapper .loader-section.section-left {
+    left: 0;
+}
+
+#loader-wrapper .loader-section.section-right {
+    right: 0;
+}
+
+/* Loaded */
+.loaded #loader-wrapper .loader-section.section-left {
+    -webkit-transform: translateX(-100%);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateX(-100%);  /* IE 9 */
+            transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */
+
+    -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);  
+            transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+.loaded #loader-wrapper .loader-section.section-right {
+    -webkit-transform: translateX(100%);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateX(100%);  /* IE 9 */
+            transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */
+
+-webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);  
+    transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+.loaded #loader {
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out;  
+            transition: all 0.3s ease-out;
+}
+.loaded #loader-wrapper {
+    visibility: hidden;
+
+    -webkit-transform: translateY(-100%);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateY(-100%);  /* IE 9 */
+            transform: translateY(-100%);  /* Firefox 16+, IE 10+, Opera */
+
+    -webkit-transition: all 0.3s 1s ease-out;  
+            transition: all 0.3s 1s ease-out;
+}
+
+
+webview {
+    height: calc(100vh - 30px);
+    width: 100%;
+}
+
+
+
+#bar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+    background: #FFFFFF;
+    padding: 0px 10px;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    margin-bottom: 1px;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+#bar > div{
+    padding: 5px 5px;
+    line-height: 0;
+    border-radius: 2px;
+}
+
+#bar .icon {
+    width: 16px;
+    height: 16px
+}
+
+#bar > div:hover {
+    background: #f1f1f1;
+}
+
+#bar #stop {
+    display: none;
+}
+
+#bar .cant {
+    opacity: .2;
+}
+body.open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+body.open #notice {
+    padding: 20px;
+    font-size: 2em;
+    color: #999999;
+}
+.sub-heading {
+    font-size: 1em;
+    color: #999999;
+}
+body .checking {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: checking 2s linear infinite;
+  }
+  
+  @-webkit-keyframes checking {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes checking {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+body .error {
+    background: url(https://gatwave.fr/app/assets/images/warning.png) #FFFFFF;
+    background-position: center;
+    background-size: contain;
+    height: 100px;
+    width: 300px;
+    background-repeat: no-repeat;
+    filter: grayscale(100%);
+}
+
+body {
+    user-select: none;
+}
+
+body.auth{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.auth #logo {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    background: url("https://gatwave.fr/app/assets/images/logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+}
+
+.auth .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.auth .login-form .webflow-style-input{
+    margin-top: 10px;
+}
+
+
+#message {
+    color: red;
+}
+
+
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+  }
+  .form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+  .form input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .form button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #0a974b;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+  .form button:hover,.form button:active,.form button:focus {
+    background: #43A047;
+  }
+  .form .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+  }
+  .form .message a {
+    color: #0a974b;
+    text-decoration: none;
+  }
+  .form .register-form {
+    display: none;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .container:before, .container:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .container .info {
+    margin: 50px auto;
+    text-align: center;
+  }
+  .container .info h1 {
+    margin: 0 0 15px;
+    padding: 0;
+    font-size: 36px;
+    font-weight: 300;
+    color: #1a1a1a;
+  }
+  .container .info span {
+    color: #4d4d4d;
+    font-size: 12px;
+  }
+  .container .info span a {
+    color: #000000;
+    text-decoration: none;
+  }
+  .container .info span .fa {
+    color: #EF3B3A;
+  }
+  body {
+    background: #FFFFFF; /* fallback for old browsers */
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;      
+  }

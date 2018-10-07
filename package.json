@@ -1,0 +1,72 @@
+{
+  "name": "gatwave-browser",
+  "version": "1.0.1",
+  "description": "Gatwave Browser",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder ."
+  },
+  "keywords": [],
+  "author": "DyanWeb",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^3.0.2",
+    "electron-builder": "^20.15.1",
+    "electron-sudo": "github:mullvad/electron-sudo",
+    "shelljs": "^0.8.2",
+    "sleep": "^5.2.3",
+    "sudo": "^1.0.3",
+    "sudo-js": "^1.0.2"
+  },
+  "build": {
+    "appId": "com.dyanweb.gatwave",
+    "productName": "Gatwave",
+    "files": [
+      "bin/**/*",
+      "src/*",
+      "src/**/*",
+      "src/**/**/*"
+    ],
+    "extraResources": [
+      "bin/**"
+    ],
+    "copyright": "Copyright © 2018 ${author}",
+    "win": {
+      "target": [
+        {
+          "target": "portable"
+        }
+      ],
+      "asarUnpack": [
+        "bin/win32-x64/*"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "displayLanguageSelector": true,
+      "installerLanguages": [
+        "en_US",
+        "de_DE",
+        "vi_VN",
+        "fr_FR"
+      ],
+      "multiLanguageInstaller": true,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.png"
+    },
+    "portable": {
+      "requestExecutionLevel": "admin"
+    },
+    "buildVersion": "1.1"
+  },
+  "dependencies": {
+    "electron-dl": "^1.12.0",
+    "electron-json-storage": "^4.1.2",
+    "request": "^2.87.0",
+    "sudo-prompt": "^8.2.3"
+  }
+}
