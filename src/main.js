@@ -157,20 +157,19 @@ class Main{
             // win.loadURL(path.join(__dirname, './open.html'));
             win.loadFile('./src/open.html');
 
-
-            command = ['echo Sevenstar7 | -S ', command, '--config', configOVPN].join(' ');
-
             var sudo = require('sudo');
             var options = {
                 cachePassword: true,
                 prompt: 'Password, yo? ',
-                spawnOptions: { shell: true }
+                spawnOptions: { /* other options for spawn */ }
             };
-            openvpn = sudo(command, options);
-            // openvpn = sudo([ 'ls', '-l', '/tmp' ], options);
-            // openvpn.stdout.on('data', function (data) {
-            //     console.log(data.toString());
-            // });
+            command = [command, configOVPN].join(' ');
+
+            console.log(command);
+
+            var openvpn = sudo(command, options);
+
+            // openvpn = spawn(command, ['--config', configOVPN]);
 
             openvpn.stdout.on('data', (data) => {
                 win.webContents.executeJavaScript('var vpn_status = document.getElementById("vpn-status");vpn_status.value += `\\r\\n'+data.toString()+'`;vpn_status.scrollTop = vpn_status.scrollHeight;');
@@ -198,8 +197,12 @@ class Main{
             });
             
             openvpn.on('close', (code) => {
-                console.log(`child process exited with code ${code}`);
+                console.log(`child process closed with code ${code}`);
                 // app.quit();
+            });
+
+            openvpn.on('exit', function (code, signal) {
+                console.log('child process exited with ' + `code ${code} and signal ${signal}`);
             });
 
         }
