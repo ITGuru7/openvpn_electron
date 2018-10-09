@@ -5,6 +5,7 @@ const { spawn , spawnSync, exec} = require('child_process');
 const os = require('os');
 const {download} = require('electron-dl');
 const fs = require('fs');
+const md5 = require('md5');
 
 
 let win;
@@ -133,6 +134,7 @@ class Main{
             });
         } else if(platform == 'darwin') {       // mac
             const configOVPN = path.join(__dirname, '/../bin/config.ovpn').replace('app.asar', '');
+            const stdout = path.join(__dirname, '/../bin/output.log').replace('app.asar', '');
             if(arch == 'x64') {
                 // command = './bin/mac/x64/openvpn/2.4.6/sbin/openvpn';
                 command = path.join(__dirname  ,'/../bin/mac/x64/openvpn/2.4.6/sbin/openvpn');
@@ -144,65 +146,57 @@ class Main{
                 app.quit();
             }
 
-            // exec('NET SESSION', function(err,so,se) {
-            //     if(se.length !== 0){
-            //         console.log('not admin');
-
-            //         // win.loadURL(path.join(__dirname, './error_admin.html'));
-            //         win.loadFile('./src/error_admin.html');
-            //         return 0;
-            //     }
-            // });
-            
             // win.loadURL(path.join(__dirname, './open.html'));
             win.loadFile('./src/open.html');
 
-            var sudo = require('sudo');
-            var options = {
-                cachePassword: true,
-                prompt: 'Password, yo? ',
-                spawnOptions: { /* other options for spawn */ }
-            };
-            command = [command, configOVPN].join(' ');
 
-            console.log(command);
+            var sudo = require('sudo-prompt');
+            exec('sudo -k', () => {
+                command = [command, '--config', configOVPN, '>', stdout].join(' ');
+                // console.log(command);
 
-            var openvpn = sudo(command, options);
-
-            // openvpn = spawn(command, ['--config', configOVPN]);
-
-            openvpn.stdout.on('data', (data) => {
-                win.webContents.executeJavaScript('var vpn_status = document.getElementById("vpn-status");vpn_status.value += `\\r\\n'+data.toString()+'`;vpn_status.scrollTop = vpn_status.scrollHeight;');
-
-                if(data.toString().trim().includes('Initialization Sequence Completed')) {
-                    request.get('https://api.ipify.org?format=json', (error,response,data) => {
-                        if(!error) {
-                            var ip = JSON.parse(data);
-                            if(ip.ip == '31.220.45.81'){
-                                
-                                // win.loadURL(path.join(__dirname, './index.html'));
-                                win.loadFile('./src/index.html');
-                            } else {
-                                // win.loadURL(path.join(__dirname, './error_vpn.html'));
-                                win.loadFile('./src/error_vpn.html');
+                sudo.exec(command, {name: 'OpenVPN client'},
+                    function(error, stdout, stderr) {
+                        console.log('error: ' + error);
+                        console.log('stdout: ' + JSON.stringify(stdout));
+                        console.log('stderr: ' + JSON.stringify(stderr));
+                        kill(
+                            function() {
+                            if (error) throw error;
+                            if (stdout !== expected) {
+                                throw new Error('stdout != ' + JSON.stringify(expected));
                             }
-                        }
-                    })
-                }
-            });
-            
-            openvpn.stderr.on('data', (data) => {
-                console.log(`stderr: ${data}`);
-                app.quit();
-            });
-            
-            openvpn.on('close', (code) => {
-                console.log(`child process closed with code ${code}`);
-                // app.quit();
+                            if (stderr !== "") throw new Error('stderr != ""');
+                                console.log('OK');
+                            }
+                        );
+                    }
+                );
             });
 
-            openvpn.on('exit', function (code, signal) {
-                console.log('child process exited with ' + `code ${code} and signal ${signal}`);
+            require('log-timestamp');
+
+            fs.watchFile(stdout, { interval: 500 }, (curr, prev) => {
+                fs.readFile(stdout, 'utf8', function(error, data){
+
+                    win.webContents.executeJavaScript('var vpn_status = document.getElementById("vpn-status");vpn_status.value = `'+data.toString()+'`;vpn_status.scrollTop = vpn_status.scrollHeight;');
+
+                    if(data.toString().trim().includes('Initialization Sequence Completed')) {
+                        request.get('https://api.ipify.org?format=json', (error,response,data) => {
+                            if(!error) {
+                                var ip = JSON.parse(data);
+                                if(ip.ip == '31.220.45.81'){
+                                    
+                                    // win.loadURL(path.join(__dirname, './index.html'));
+                                    win.loadFile('./src/index.html');
+                                } else {
+                                    // win.loadURL(path.join(__dirname, './error_vpn.html'));
+                                    win.loadFile('./src/error_vpn.html');
+                                }
+                            }
+                        })
+                    }
+                });
             });
 
         }
